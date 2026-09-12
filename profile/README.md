@@ -12,7 +12,18 @@ what did it add, what did it leak, and was it what you asked for.
 | [vault-guard](https://github.com/vaultcompasshq/vault-guard) | Is there a credential in this diff? | [Marketplace](https://github.com/marketplace/actions/vault-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/vault-guard) |
 | [intent-guard](https://github.com/vaultcompasshq/intent-guard) | Does this change stay inside the intent contract that was frozen for it? | [npm](https://www.npmjs.com/package/@vaultcompass/intent-guard) |
 
-## One workflow for all three gates
+## On your machine, one hook for all three gates
+
+```sh
+npm install -g @vaultcompass/conductor @vaultcompass/dep-guard @vaultcompass/vault-guard @vaultcompass/intent-guard
+conductor init --dry-run   # prints every file it would write, writes nothing
+conductor init             # writes .guardrails.yaml and one pre-commit hook
+```
+
+The hook runs every enabled gate on each commit and prints one line when the
+commit is clean. Each gate can also be installed and run on its own.
+
+## In CI, one workflow for all three gates
 
 ```yaml
 name: guardrails
@@ -50,7 +61,7 @@ AI coding assistants are fast and confident, and they make three kinds of
 mistake that a reviewer skimming a large diff will miss: they add packages
 that do not exist or are not the one you meant, they paste credentials into
 files that get committed, and they drift from the task you gave them. Each
-gate is narrow on purpose. Each one runs in under a few seconds, works
+gate is narrow on purpose, fast enough to sit in a pre-commit hook, works
 offline by default, and installs with one command.
 
 ## Also from Vault & Compass
