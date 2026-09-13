@@ -43,7 +43,7 @@ jobs:
           conductor-version: 0.4.0
           dep-guard-version: 0.6.0
           vault-guard-version: 1.7.0
-          intent-guard-version: 1.4.0
+          intent-guard-version: 1.5.0
       - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
