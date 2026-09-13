@@ -10,7 +10,7 @@ what did it add, what did it leak, and was it what you asked for.
 | [conductor](https://github.com/vaultcompasshq/conductor) | Runs every gate below and writes one SARIF log | [Marketplace](https://github.com/marketplace/actions/conductor-guardrail-gates) · [npm](https://www.npmjs.com/package/@vaultcompass/conductor) |
 | [dep-guard](https://github.com/vaultcompasshq/dep-guard) | Is this new dependency a typosquat, a hallucinated name, a tampered lockfile entry, or an install script? | [Marketplace](https://github.com/marketplace/actions/dep-guard-dependency-gate) · [npm](https://www.npmjs.com/package/@vaultcompass/dep-guard) |
 | [vault-guard](https://github.com/vaultcompasshq/vault-guard) | Is there a credential in this diff? | [Marketplace](https://github.com/marketplace/actions/vault-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/vault-guard) |
-| [intent-guard](https://github.com/vaultcompasshq/intent-guard) | Does this change stay inside the intent contract that was frozen for it? | [npm](https://www.npmjs.com/package/@vaultcompass/intent-guard) |
+| [intent-guard](https://github.com/vaultcompasshq/intent-guard) | Does this change stay inside the intent contract that was frozen for it? | [Marketplace](https://github.com/marketplace/actions/intent-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/intent-guard) |
 
 ## On your machine, one hook for all three gates
 
