@@ -39,20 +39,21 @@ jobs:
         with:
           fetch-depth: 0
       - uses: vaultcompasshq/conductor@v0.4.0
-        with:
-          conductor-version: 0.4.0
-          dep-guard-version: 0.6.0
-          vault-guard-version: 1.7.0
-          intent-guard-version: 1.5.0
       - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: conductor.sarif
 ```
 
-The Action installs the pinned versions outside the repository it is
-judging. On a pull request, every gate reads its rules from the base
-branch, so a change cannot turn off the check that exists to catch it.
+One pin, not five. The action tag decides which version of each gate is
+installed, and those defaults are the versions that tag was tested with,
+so there is no `version` input to set here. Setting one creates a second
+pin that Dependabot cannot see: it moves the tag and leaves the input
+untouched, and the two drift apart silently.
+
+The Action installs those versions outside the repository it is judging.
+On a pull request, every gate reads its rules from the base branch, so a
+change cannot turn off the check that exists to catch it.
 Findings land in the pull request's code scanning tab through SARIF.
 
 ## Why these exist
