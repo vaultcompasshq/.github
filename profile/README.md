@@ -35,7 +35,7 @@ jobs:
   gates:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: vaultcompasshq/conductor@7db96a7f6da85eec80153c10d8365b71bb226278 # v0.4.7
@@ -65,12 +65,7 @@ files that get committed, and they drift from the task you gave them. Each
 gate is narrow on purpose, fast enough to sit in a pre-commit hook, works
 offline by default, and installs with one command.
 
-## Also from Vault & Compass
-
-[Prismfolio](https://vaultcompass.io/products/prismfolio/) and
-[Sheetful](https://vaultcompass.io/products/sheetful/) are our consumer
-finance products. The guardrails above are what we built to keep our own
-AI-assisted development of them safe, and they are open source under MIT.
+Built by Vault & Compass, the team behind Prismfolio (https://prismfolio.io) and Sheetful (https://sheetful.io).
 
 Security reports: security@vaultcompass.io. See each repository's
 SECURITY.md.
