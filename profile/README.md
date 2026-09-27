@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: vaultcompasshq/conductor@7db96a7f6da85eec80153c10d8365b71bb226278 # v0.4.7
+      - uses: vaultcompasshq/conductor@1d1100ef50c1ab1219b24579b367e33870041a4f # v0.5.0
       - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
