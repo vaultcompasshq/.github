@@ -17,7 +17,7 @@ what did it add, what did it leak, and was it what you asked for.
 ```sh
 npm install -g @vaultcompass/conductor @vaultcompass/dep-guard @vaultcompass/vault-guard @vaultcompass/intent-guard
 conductor init --dry-run   # prints every file it would write, writes nothing
-conductor init             # writes .guardrails.yaml and one pre-commit hook
+conductor init             # writes .guardrails.yaml; add --hook for one pre-commit hook
 ```
 
 The hook runs every enabled gate on each commit and prints one line when the
@@ -38,16 +38,32 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: vaultcompasshq/conductor@1d1100ef50c1ab1219b24579b367e33870041a4f # v0.5.0
+      - name: Install gitleaks and osv-scanner
+        run: |
+          set -euo pipefail
+          bin="$RUNNER_TEMP/external-gates"
+          mkdir -p "$bin"
+          cd "$RUNNER_TEMP"
+          curl -sSLO https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks_8.30.1_linux_x64.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks_8.30.1_linux_x64.tar.gz -C "$bin" gitleaks
+          curl -sSL -o "$bin/osv-scanner" https://github.com/google/osv-scanner/releases/download/v2.6.0/osv-scanner_linux_amd64
+          echo "ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108  $bin/osv-scanner" | sha256sum -c -
+          chmod +x "$bin/osv-scanner"
+          echo "$bin" >> "$GITHUB_PATH"
+      - uses: vaultcompasshq/conductor@b0b675a48e7f0e38efc54ec80861b3bafbfcd14f # v0.6.0
       - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: conductor.sarif
 ```
 
-One pin, not five. The action tag decides which version of each gate is
-installed, and those defaults are the versions that tag was tested with,
-so there is no `version` input to set here. Setting one creates a second
+One pin, not five. The action tag decides which version of each of the
+four npm packages is installed, and those defaults are the versions that
+tag was tested with, so there is no `version` input to set here; the
+install step above is required when the policy enables the secrets-history
+and vulnerabilities gates, and it pins gitleaks and osv-scanner by version
+and checksum rather than by the action tag. Setting one creates a second
 pin that Dependabot cannot see: it moves the tag and leaves the input
 untouched, and the two drift apart silently.
 
