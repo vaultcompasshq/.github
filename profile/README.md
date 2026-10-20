@@ -51,7 +51,7 @@ jobs:
           echo "ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108  $bin/osv-scanner" | sha256sum -c -
           chmod +x "$bin/osv-scanner"
           echo "$bin" >> "$GITHUB_PATH"
-      - uses: vaultcompasshq/conductor@bec2889c7a6a4befe5e948c8d0cdb926fc4ee912 # v0.13.1
+      - uses: vaultcompasshq/conductor@f2fa77069594c4ae4e8df2561924fc4e6a94fac0 # v0.13.2
       - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
