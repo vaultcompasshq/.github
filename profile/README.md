@@ -1,18 +1,24 @@
 # Vault & Compass
 
-Open-source guardrails for AI-assisted development. Four small tools that
-run as a pre-commit hook on your machine and as a GitHub Action on every
-pull request, and answer three questions about a change before it lands:
-what did it add, what did it leak, and was it what you asked for.
+Open-source guardrails for AI-assisted development. Three small gates, plus
+an optional umbrella that runs them together, work as a pre-commit hook on
+your machine and as a GitHub Action on every pull request, and answer three
+questions about a change before it lands: what did it add, what did it leak,
+and was it what you asked for.
 
 | Gate | Question it answers | Install |
 | --- | --- | --- |
-| [conductor](https://github.com/vaultcompasshq/conductor) | Runs every gate below and writes one SARIF log | [Marketplace](https://github.com/marketplace/actions/conductor-guardrail-gates) · [npm](https://www.npmjs.com/package/@vaultcompass/conductor) |
+| [conductor](https://github.com/vaultcompasshq/conductor) | Runs the three gates below, plus gitleaks and osv-scanner if you install them, and writes one SARIF log | [Marketplace](https://github.com/marketplace/actions/conductor-guardrail-gates) · [npm](https://www.npmjs.com/package/@vaultcompass/conductor) |
 | [dep-guard](https://github.com/vaultcompasshq/dep-guard) | Is this new dependency a typosquat, a hallucinated name, a tampered lockfile entry, or an install script? | [Marketplace](https://github.com/marketplace/actions/dep-guard-dependency-gate) · [npm](https://www.npmjs.com/package/@vaultcompass/dep-guard) |
 | [vault-guard](https://github.com/vaultcompasshq/vault-guard) | Is there a credential in this diff? | [Marketplace](https://github.com/marketplace/actions/vault-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/vault-guard) |
 | [intent-guard](https://github.com/vaultcompasshq/intent-guard) | Does this change stay inside the intent contract that was frozen for it? | [Marketplace](https://github.com/marketplace/actions/intent-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/intent-guard) |
 
-## On your machine, one hook for all three gates
+See it run: [conductor-proof](https://github.com/vaultcompasshq/conductor-proof)
+keeps six pull requests open, one planted problem each, with an
+ordinary gitleaks and osv-scanner job beside conductor. The checks on
+each pull request are the evidence.
+
+## On your machine, one hook for every gate
 
 ```sh
 npm install -g @vaultcompass/conductor @vaultcompass/dep-guard @vaultcompass/vault-guard @vaultcompass/intent-guard
@@ -23,7 +29,7 @@ conductor init             # writes .guardrails.yaml; add --hook for one pre-com
 The hook runs every enabled gate on each commit and prints one line when the
 commit is clean. Each gate can also be installed and run on its own.
 
-## In CI, one workflow for all three gates
+## In CI, one workflow for every gate
 
 ```yaml
 name: guardrails
