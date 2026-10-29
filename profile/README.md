@@ -64,14 +64,15 @@ jobs:
           sarif_file: conductor.sarif
 ```
 
-One pin, not five. The action tag decides which version of each of the
-four npm packages is installed, and those defaults are the versions that
-tag was tested with, so there is no `version` input to set here; the
-install step above is required when the policy enables the secrets-history
-and vulnerabilities gates, and it pins gitleaks and osv-scanner by version
-and checksum rather than by the action tag. Setting one creates a second
-pin that Dependabot cannot see: it moves the tag and leaves the input
-untouched, and the two drift apart silently.
+One pin for the four npm packages, not four. The action tag decides which
+version of each is installed, and those defaults are the versions that tag
+was tested with, so there is no `version` input to set here. Setting a
+`version` input creates a second pin that Dependabot cannot see: it moves
+the tag and leaves the input untouched, and the two drift apart silently.
+
+The install step above is separate. It is required when the policy enables
+the secrets-history and vulnerabilities gates, and it pins gitleaks and
+osv-scanner by version and checksum rather than by the action tag.
 
 The Action installs those versions outside the repository it is judging.
 On a pull request, every gate reads its rules from the base branch, so a
