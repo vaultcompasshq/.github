@@ -88,7 +88,7 @@ files that get committed, and they drift from the task you gave them. Each
 gate is narrow on purpose, fast enough to sit in a pre-commit hook, works
 offline by default, and installs with one command.
 
-Built by Vault & Compass, the team behind Prismfolio (https://prismfolio.io) and Sheetful (https://sheetful.io).
+Built and maintained by Vault & Compass LLC.
 
 Security reports: security@vaultcompass.io. See each repository's
 SECURITY.md.
