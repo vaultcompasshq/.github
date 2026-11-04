@@ -6,9 +6,14 @@ your machine and as a GitHub Action on every pull request, and answer three
 questions about a change before it lands: what did it add, what did it leak,
 and was it what you asked for.
 
+The umbrella is [conductor](https://github.com/vaultcompasshq/conductor)
+([Marketplace](https://github.com/marketplace/actions/conductor-guardrail-gates)
+· [npm](https://www.npmjs.com/package/@vaultcompass/conductor)). It runs the
+three gates below, plus gitleaks and osv-scanner if you install them, from one
+policy file, and writes one SARIF log. It is optional; each gate runs on its own.
+
 | Gate | Question it answers | Install |
 | --- | --- | --- |
-| [conductor](https://github.com/vaultcompasshq/conductor) | Runs the three gates below, plus gitleaks and osv-scanner if you install them, and writes one SARIF log | [Marketplace](https://github.com/marketplace/actions/conductor-guardrail-gates) · [npm](https://www.npmjs.com/package/@vaultcompass/conductor) |
 | [dep-guard](https://github.com/vaultcompasshq/dep-guard) | Is this new dependency a typosquat, a hallucinated name, a tampered lockfile entry, or an install script? | [Marketplace](https://github.com/marketplace/actions/dep-guard-dependency-gate) · [npm](https://www.npmjs.com/package/@vaultcompass/dep-guard) |
 | [vault-guard](https://github.com/vaultcompasshq/vault-guard) | Is there a credential in this diff? | [Marketplace](https://github.com/marketplace/actions/vault-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/vault-guard) |
 | [intent-guard](https://github.com/vaultcompasshq/intent-guard) | Does this change stay inside the intent contract that was frozen for it? | [Marketplace](https://github.com/marketplace/actions/intent-guard) · [npm](https://www.npmjs.com/package/@vaultcompass/intent-guard) |
@@ -23,11 +28,12 @@ each pull request are the evidence.
 ```sh
 npm install -g @vaultcompass/conductor @vaultcompass/dep-guard @vaultcompass/vault-guard @vaultcompass/intent-guard
 conductor init --dry-run   # prints every file it would write, writes nothing
-conductor init             # writes .guardrails.yaml; add --hook for one pre-commit hook
+conductor init --hook      # writes .guardrails.yaml and one pre-commit hook
 ```
 
-The hook runs every enabled gate on each commit and prints one line when the
-commit is clean. Each gate can also be installed and run on its own.
+The hook runs every enabled gate on each commit and, when the commit is
+clean, prints one summary line, plus one status line per gate on stderr.
+Each gate can also be installed and run on its own.
 
 ## In CI, one workflow for every gate
 
@@ -41,7 +47,7 @@ jobs:
   gates:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Install gitleaks and osv-scanner
@@ -58,7 +64,7 @@ jobs:
           chmod +x "$bin/osv-scanner"
           echo "$bin" >> "$GITHUB_PATH"
       - uses: vaultcompasshq/conductor@f5c68efe4dd3f17738e72b19411fea0e829bc2b8 # v0.17.0
-      - uses: github/codeql-action/upload-sarif@v4
+      - uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         if: always()
         with:
           sarif_file: conductor.sarif
